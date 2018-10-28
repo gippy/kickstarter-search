@@ -1,0 +1,12 @@
+{
+	"name": "kickstarter-search",
+	"actId": null,
+	"version": {
+		"versionNumber": "0.1",
+		"buildTag": "latest",
+		"envVars": [],
+		"sourceType": "TARBALL",
+		"tarballUrl": null
+	},
+	"template": "basic"
+}
