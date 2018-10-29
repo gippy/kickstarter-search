@@ -12,7 +12,7 @@ Input of this actor should be JSON containing filter specification. Allowed filt
 | ----- | ---- | ----------- | -------------- |
 | query | String | Search term | Any string value |
 | category | String | Category to search in | Category slug from this list |
-| location | String / Number | Location to search around | Either a name of the location or ID of location |
+| location | String / Number | Location to search around | Either a name of the location or ID of the location |
 | status | String | State of the project | One of: "All", "Live", "Successful" |
 | pledged | String | Amount pledged | One of:<br>"All"<br>"< $1,000 pledged"<br>"$1,000 to $10,000 pledged"<br>"$10,000 to $100,000 pledged"<br>"$100,000 to $1,000,000 pledged"<br>"> $1,000,000 pledged" |
 | goal | String | Goal amount | One of:<br>"All"<br>"< $1,000 goal"<br>"$1,000 to $10,000 goal"<br>"$10,000 to $100,000 goal"<br> "$100,000 to $1,000,000 goal"<br>"> $1,000,000 goal" |
