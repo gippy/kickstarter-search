@@ -4,6 +4,7 @@ Actor which takes Kickstarter search filters and outputs JSON of found results.
 
 ## Planned features
 
+0) Unit tests
 1) Compare current run with previous one and output only new projects
 2) Concurrently load more pages at the same time to speed up project loading
 
