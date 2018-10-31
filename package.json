@@ -4,16 +4,16 @@
 	"description": "Actor which provides wrapper above Kickstarter search.",
 	"main": "main.js",
 	"dependencies": {
-		"apify": "^0.8.16",
+		"apify": "^0.8.18",
+		"apify-shared": "^0.1.7",
 		"cheerio": "^1.0.0-rc.2",
-		"request-promise": "^4.2.2"
+		"lodash": "^4.17.11",
+		"request-promise-native": "^1.0.5"
 	},
 	"devDependencies": {
 		"eslint": "^5.8.0",
 		"eslint-config-airbnb": "^17.1.0",
-		"eslint-plugin-import": "^2.14.0",
-		"eslint-plugin-jsx-a11y": "^6.1.2",
-		"eslint-plugin-react": "^7.11.1"
+		"eslint-plugin-import": "^2.14.0"
 	},
 	"scripts": {
 		"start": "node main.js",

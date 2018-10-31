@@ -7,15 +7,15 @@
             "title": "Query",
             "type": "string",
             "description": "What to search Kickstarter for",
-            "prefill": "Hoverboard",
             "editor": "textfield"
         },
         "category": {
             "title": "Category",
             "type": "string",
             "description": "Category to search in",
-            "prefill": "Technology",
+            "prefill": "All",
             "enum": [
+                "All",
                 "art",
                 "art/ceramics",
                 "art/conceptual art",
@@ -192,7 +192,7 @@
             "title": "Location",
             "type": "string",
             "description": "Location to search around, can be either string or Numeric ID of the location",
-            "prefill": "Prague",
+            "prefill": "",
             "editor": "textfield"
         },
         "status": {
@@ -231,14 +231,12 @@
             "title": "Maximum results",
             "type": "integer",
             "description": "Limit number of results",
-            "default": 0,
             "minimum": 0
         },
         "previousRun": {
             "title": "Compare with",
             "type": "string",
             "description": "If you provide previous run ID, then results will be compared with previous run and only new projects will be outputed",
-            "prefill": "Run ID",
             "editor": "textfield"
         }
     },
