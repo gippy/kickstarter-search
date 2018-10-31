@@ -1,9 +1,12 @@
 const Apify = require('apify');
 const request = require('request-promise-native');
 const cheerio = require('cheerio');
+const _ = require('lodash');
 const querystring = require('querystring');
 const parseInput = require('./parseInput');
-const { BASE_URL } = require('./consts');
+const cleanProject = require('./cleanProject');
+const { crash } = require('./utils');
+const { BASE_URL, PROJECTS_PER_PAGE, MAX_PAGES } = require('./consts');
 
 const commonHeaders = {
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
@@ -45,6 +48,10 @@ async function getPreparedRequest(queryParameters) {
 
 async function getProjects(input) {
     const queryParameters = await parseInput(input);
+    let { maxResults } = input;
+    if (maxResults && (!_.isNumber(maxResults) || maxResults <= 0)) crash('Input parameter maxResults must be a positive number');
+    else if (!maxResults) maxResults = 200 * PROJECTS_PER_PAGE;
+
     console.log('Loading projects for query');
     console.log(queryParameters);
 
@@ -56,6 +63,7 @@ async function getProjects(input) {
     let totalProjects = 0;
     let savedProjects = 0;
     const startedAt = Date.now();
+    const maximumResults = Math.min(maxResults, MAX_PAGES * PROJECTS_PER_PAGE);
     do {
         console.log(`Page ${page}: Loading projects`);
         const params = querystring.stringify({
@@ -71,20 +79,30 @@ async function getProjects(input) {
         });
         if (page === 1) {
             console.log(`Page ${page}: Found ${data.total_hits} projects`);
-            totalProjects = data.total_hits;
+            if (data.total_hits > maximumResults) {
+                console.log('|');
+                console.log(`| Found ${data.total_hits} projects which is more then the maximum`);
+                console.log(`| allowed number of projects (${maximumResults}) not all projects`);
+                console.log('| will be outputed');
+                console.log('|');
+            }
+            totalProjects = Math.min(data.total_hits, maximumResults);
         }
-        seed = data.seed; // eslint-disable-line
-        await Apify.pushData(data.projects);
-        console.log(`Page ${page}: Saved ${data.projects.length} projects`);
 
-        savedProjects += data.projects.length;
+        const projectsToSave = data.projects.slice(0, maximumResults - savedProjects).map(cleanProject);
+        seed = data.seed; // eslint-disable-line
+        await Apify.pushData(projectsToSave);
+        console.log(`Page ${page}: Saved ${projectsToSave.length} projects`);
+
+        savedProjects += projectsToSave.length;
         hasMoreResults = data.has_more;
+
         if (hasMoreResults) {
             const finished = 1 - (savedProjects / totalProjects);
             const remainingProjectsPercentage = Math.round(finished * 10000) / 100;
             console.log(`Page ${page}: Remaining projects ${totalProjects - savedProjects} (${remainingProjectsPercentage}%)`);
 
-            if (page % 10 === 1) {
+            if (page % 10 === 0) {
                 const elapsedTime = Date.now() - startedAt;
                 const timeSpentPerResult = elapsedTime / savedProjects;
                 const remainingTime = timeSpentPerResult * (totalProjects - savedProjects);
@@ -93,7 +111,7 @@ async function getProjects(input) {
             }
         }
         page++;
-    } while (hasMoreResults);
+    } while (hasMoreResults && savedProjects < totalProjects);
 
     console.log('All projects saved');
 }

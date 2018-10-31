@@ -232,12 +232,6 @@
             "type": "integer",
             "description": "Limit number of results",
             "minimum": 0
-        },
-        "previousRun": {
-            "title": "Compare with",
-            "type": "string",
-            "description": "If you provide previous run ID, then results will be compared with previous run and only new projects will be outputed",
-            "editor": "textfield"
         }
     },
     "required": []
