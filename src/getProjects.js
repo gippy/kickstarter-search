@@ -14,14 +14,14 @@ async function getPreparedRequest(queryParameters) {
     const url = `${BASE_URL}${params}`;
 
 
-    const sessionLength = 8;
+    /*const sessionLength = 8;
     const proxy = Apify.getApifyProxyUrl({
         session: `ks${Math.floor(Math.random() * (10 ** sessionLength)).toString().padStart(sessionLength, '0')}`,
-    });
+    });*/
 
     // Prepare cookie jar so that the second request contains cookies from the first one
     const cookieJar = request.jar()
-    const preparedRequest = request.defaults({ jar: cookieJar, proxy })
+    const preparedRequest = request.defaults({ jar: cookieJar, /*proxy*/ })
 
     // Query the url and load csrf token from it
     const html = await preparedRequest({
