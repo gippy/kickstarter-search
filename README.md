@@ -1,13 +1,13 @@
 # Actor - Kickstarter search
 
-Actor which takes Kickstarter search filters and outputs JSON of found results.
+Actor which takes as an Input Kickstarter search filter configuration and outputs JSON of found results into dataset.
 
 ## Planned features
 
-0) Unit tests
-1) Compare current run with previous one and output only new projects
-2) Concurrently load more pages at the same time to speed up project loading
-3) Add human readable formats to dates and other values in output.
+* Unit tests
+* Compare current run with previous one and output only new projects
+* Concurrently load more pages at the same time to speed up project loading
+* Add human readable formats to dates and other values in output.
 
 ## INPUT
 
@@ -22,7 +22,7 @@ Input of this actor should be JSON containing filter specification. Allowed filt
 | pledged | String | Amount pledged | One of:<br>"All"<br>"< $1,000 pledged"<br>"$1,000 to $10,000 pledged"<br>"$10,000 to $100,000 pledged"<br>"$100,000 to $1,000,000 pledged"<br>"> $1,000,000 pledged" |
 | goal | String | Goal amount | One of:<br>"All"<br>"< $1,000 goal"<br>"$1,000 to $10,000 goal"<br>"$10,000 to $100,000 goal"<br> "$100,000 to $1,000,000 goal"<br>"> $1,000,000 goal" |
 | raised | String | Amount raised | One of:<br>"All"<br>"< 75% raised"<br>"75% to 100% raised"<br>"> 100% raised" |
-| maxResults | Number | Maximum number of projects in output | Positive number, 0 for all results |
+| maxResults | Number | Maximum number of projects in output | Positive number, 0 for up to 2400 results |
 
 ### Important considerations
 **Location** - If you provide location to the Actor and it's set a string, it will run another actor to find
@@ -43,18 +43,19 @@ number of found results and how many results are remaining.
 
 Every 10th page load will output prediction of how long it will take for the run to finish.
 
-## Dataset
+## Dataset items
 
-During the run, the actor is storing results into dataset, each project is a seperate item in dataset and it's
+During the run, the actor is storing results into dataset, each project is a separate item in the dataset and it's
 structure looks like this:
 
 ```json
 {
   "id": 1293646151,
+  "photo": "https://ksr-ugc.imgix.net/assets/023/084/557/b95fc7ed612431d640810da0c72b135d_original.jpg?ixlib=rb-1.1.0&crop=faces&w=560&h=315&fit=crop&v=1540944591&auto=format&frame=1&q=92&s=3d9c00ab27cc4b18fa1ba465602fefde",
   "name": "Curiously Cynical Creatures - Vinyl Stickers",
   "blurb": "I designed some animal stickers. Come get some! They will be vinyl, matte, and custom-cut.",
   "goal": 300,
-  "pledged": 0,
+  "pledged": 1.29,
   "state": "live",
   "slug": "curiously-cynical-creatures-vinyl-stickers",
   "disable_communication": false,
@@ -68,9 +69,9 @@ structure looks like this:
   "launched_at": 1541023304,
   "staff_pick": false,
   "is_starrable": true,
-  "backers_count": 0,
+  "backers_count": 1,
   "static_usd_rate": 0.76288474,
-  "usd_pledged": "0.0",
+  "usd_pledged": "0.9841213146",
   "converted_pledged_amount": 0,
   "fx_rate": 0.76190766,
   "current_currency": "USD",

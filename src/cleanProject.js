@@ -14,7 +14,6 @@ function cleanProject(project) {
         url: (project.urls && project.urls.web && project.urls.web.project) || null,
     };
 
-    delete cleanedProject.photo;
     delete cleanedProject.creator;
     delete cleanedProject.location;
     delete cleanedProject.category;
