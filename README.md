@@ -7,6 +7,7 @@ Actor which takes Kickstarter search filters and outputs JSON of found results.
 0) Unit tests
 1) Compare current run with previous one and output only new projects
 2) Concurrently load more pages at the same time to speed up project loading
+3) Add human readable formats to dates and other values in output.
 
 ## INPUT
 
