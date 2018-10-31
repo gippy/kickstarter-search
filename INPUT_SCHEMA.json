@@ -236,7 +236,7 @@
         },
         "previousRun": {
             "title": "Compare with",
-            "type": "String",
+            "type": "string",
             "description": "If you provide previous run ID, then results will be compared with previous run and only new projects will be outputed",
             "prefill": "Run ID",
             "editor": "textfield"
