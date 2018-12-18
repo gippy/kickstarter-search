@@ -47,7 +47,7 @@ async function getPreparedRequest(queryParameters) {
  *
  * @param {Number} page Page number
  * @param {Object} query Query parameters used with the page
- * @param {String} seed CSRF token loaded from kickstarter
+ * @param {Number} seed CSRF token loaded from kickstarter
  * @param {Request} preparedRequest Instance of Request class with prepared cookies
  * @return {Object} Loaded page data from the website
  */
