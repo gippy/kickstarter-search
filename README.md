@@ -6,7 +6,6 @@ Actor which takes as an Input Kickstarter search filter configuration and output
 
 * Unit tests
 * Compare current run with previous one and output only new projects
-* Concurrently load more pages at the same time to speed up project loading
 * Add human readable formats to dates and other values in output.
 
 ## INPUT

@@ -11,4 +11,4 @@ function crash(errorMessage) {
 
 module.exports = {
     crash,
-}
+};

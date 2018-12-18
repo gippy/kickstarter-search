@@ -175,7 +175,7 @@ const statuses = {
     Successful: 'successful',
 };
 
-const pledged = [
+const pledges = [
     '< $1,000 pledged',
     '$1,000 to $10,000 pledged',
     '$10,000 to $100,000 pledged',
@@ -200,7 +200,7 @@ const raised = [
 module.exports = {
     categories,
     statuses,
-    pledged,
+    pledges,
     goals,
     raised,
 };
