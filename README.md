@@ -15,10 +15,10 @@ Input of this actor should be JSON containing filter specification. Allowed filt
 | Field | Type | Description | Allowed values |
 | ----- | ---- | ----------- | -------------- |
 | query | String | Search term | Any string value |
-| category | String | Category to search in | Category slug from this list |
+| category | String | Category to search in | Category slug from <a href="https://github.com/gippy/kickstarter-search/blob/master/categories.json" target="_blank">this list</a> |
 | location | String / Number | Location to search around | Either a name of the location or ID of the location |
 | status | String | State of the project | One of: "All", "Live", "Successful" |
-| pledged | String | Amount pledged | One of:<br>"All"<br>"< $1,000 pledged"<br>"$1,000 to $10,000 pledged"<br>"$10,000 to $100,000 pledged"<br>"$100,000 to $1,000,000 pledged"<br>"> $1,000,000 pledged" |
+| pledged | String | Amount pledged | One of:<br/>"All"<br/>"< $1,000 pledged"<br/>"$1,000 to $10,000 pledged"<br/>"$10,000 to $100,000 pledged"<br/>"$100,000 to $1,000,000 pledged"<br/>"> $1,000,000 pledged" |
 | goal | String | Goal amount | One of:<br>"All"<br>"< $1,000 goal"<br>"$1,000 to $10,000 goal"<br>"$10,000 to $100,000 goal"<br> "$100,000 to $1,000,000 goal"<br>"> $1,000,000 goal" |
 | raised | String | Amount raised | One of:<br>"All"<br>"< 75% raised"<br>"75% to 100% raised"<br>"> 100% raised" |
 | maxResults | Number | Maximum number of projects in output | Positive number, 0 for up to 2400 results |
