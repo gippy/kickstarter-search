@@ -3,6 +3,7 @@ const request = require('request-promise-native');
 const cheerio = require('cheerio');
 const _ = require('lodash');
 const querystring = require('querystring');
+const { DNS_SAFE_NAME_REGEX } = require('apify-shared/regexs');
 const parseInput = require('./parseInput');
 const cleanProject = require('./cleanProject');
 const { crash } = require('./utils');
@@ -106,9 +107,14 @@ function notifyAboutEstimatedTime(currentPage, startedAt, savedProjects, totalPr
  */
 async function getProjects(input) {
     const queryParameters = await parseInput(input);
+    const { datasetName } = input;
     let { maxResults } = input;
     if (maxResults && (!_.isNumber(maxResults) || maxResults <= 0)) crash('Input parameter maxResults must be a positive number');
     else if (!maxResults) maxResults = 200 * PROJECTS_PER_PAGE;
+
+    if (datasetName && !DNS_SAFE_NAME_REGEX.test(datasetName)) {
+        crash('Input parameter datasetName can only contain alphabet characters, numbers and dash (e.g. "my-dataset-name")');
+    }
 
     console.log('Loading projects for query:');
     console.log(queryParameters);
@@ -122,6 +128,13 @@ async function getProjects(input) {
     let savedProjects = 0;
     const startedAt = Date.now();
     const maximumResults = Math.min(maxResults, MAX_PAGES * PROJECTS_PER_PAGE);
+
+    let dataset = null;
+    if (datasetName) {
+        dataset = await Apify.openDataset(datasetName);
+        await dataset.delete();
+        dataset = await Apify.openDataset(datasetName);
+    }
 
     do {
         const data = await getDataForPage(page, queryParameters, seed, preparedRequest);
@@ -137,6 +150,7 @@ async function getProjects(input) {
         const projectsToSave = data.projects.slice(0, maximumResults - savedProjects).map(cleanProject);
         seed = data.seed; // eslint-disable-line
         await Apify.pushData(projectsToSave);
+        if (dataset) dataset.pushData(projectsToSave);
         console.log(`Page ${page}: Saved ${projectsToSave.length} projects`);
 
         savedProjects += projectsToSave.length;

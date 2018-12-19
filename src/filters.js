@@ -197,10 +197,19 @@ const raised = [
     '> 100% raised',
 ];
 
+const sorts = [
+    'popularity',
+    'newest',
+    'end_date',
+    'most_funded',
+    'most_backed',
+];
+
 module.exports = {
     categories,
     statuses,
     pledges,
     goals,
     raised,
+    sorts,
 };

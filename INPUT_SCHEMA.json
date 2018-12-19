@@ -227,11 +227,26 @@
             "enum": ["All", "< 75% raised", "75% to 100% raised", "> 100% raised"],
             "editor": "select"
         },
+        "sort": {
+            "title": "Sort",
+            "type": "string",
+            "description": "Allows you to change the ",
+            "default": "newest",
+            "enum": ["popularity", "newest", "end_date", "most_funded", "most_backed"],
+            "editor": "select"
+        },
         "maxResults": {
             "title": "Maximum results",
             "type": "integer",
             "description": "Limit number of results",
             "minimum": 0
+        },
+        "datasetName": {
+            "title": "Dataset name",
+            "type": "string",
+            "description": "Use this if you want the data to be written into named dataset, setting this will overwrite the data with each run",
+            "default": "",
+            "editor": "text"
         }
     },
     "required": []

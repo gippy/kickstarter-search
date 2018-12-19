@@ -3,11 +3,11 @@ const Apify = require('apify');
 const _ = require('lodash');
 const { ACT_JOB_STATUSES } = require('apify-shared/consts');
 const { crash } = require('./utils');
-const { EMPTY_SELECT, LOCATION_SEARCH_ACTOR_ID, SORT_ORDER } = require('./consts');
-const { statuses, categories, pledges, goals, raised } = require('./filters');
+const { EMPTY_SELECT, LOCATION_SEARCH_ACTOR_ID, DEFAULT_SORT_ORDER } = require('./consts');
+const { statuses, categories, pledges, goals, raised, sorts } = require('./filters');
 
 async function processLocation(location) {
-    if (_.isNumber(location)) return location;
+    if (_.isFinite(Number(location))) return location;
     if (!_.isString(location)) crash(`Input parameter location contains invalid value ${location}`);
     const run = await Apify.call(
         LOCATION_SEARCH_ACTOR_ID,
@@ -72,10 +72,18 @@ async function parseInput(input) {
         queryParams.raised = amountRaised;
     }
 
+    // process raised
+    if (filledInFilters.sort) {
+        const sort = sorts.indexOf(filledInFilters.sort.toLowerCase());
+        if (sort === -1) crash(`Input parameter sort contains invalid value "${filledInFilters.sort}"`);
+        queryParams.sort = sort;
+    } else {
+        queryParams.sort = DEFAULT_SORT_ORDER;
+    }
+
     if (filledInFilters.location) queryParams.woe_id = await processLocation(filledInFilters.location);
 
     queryParams.page = 1;
-    queryParams.sort = SORT_ORDER;
 
     // ?state=live&term=test&category_id=10&woe_id=796597&pledged=1&goal=2&raised=1&sort=newest&seed=2568330&page=1
 

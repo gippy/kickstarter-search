@@ -19,16 +19,24 @@ Input of this actor should be JSON containing filter specification. Allowed filt
 | location | String / Number | Location to search around | Either a name of the location or ID of the location |
 | status | String | State of the project | One of: "All", "Live", "Successful" |
 | pledged | String | Amount pledged | One of:<br/>"All"<br/>"< $1,000 pledged"<br/>"$1,000 to $10,000 pledged"<br/>"$10,000 to $100,000 pledged"<br/>"$100,000 to $1,000,000 pledged"<br/>"> $1,000,000 pledged" |
-| goal | String | Goal amount | One of:<br>"All"<br>"< $1,000 goal"<br>"$1,000 to $10,000 goal"<br>"$10,000 to $100,000 goal"<br> "$100,000 to $1,000,000 goal"<br>"> $1,000,000 goal" |
-| raised | String | Amount raised | One of:<br>"All"<br>"< 75% raised"<br>"75% to 100% raised"<br>"> 100% raised" |
+| goal | String | Goal amount | One of:<br/>"All"<br/>>"< $1,000 goal"<br/>"$1,000 to $10,000 goal"<br/>"$10,000 to $100,000 goal"<br/> "$100,000 to $1,000,000 goal"<br/>"> $1,000,000 goal" |
+| raised | String | Amount raised | One of:<br/>"All"<br/>"< 75% raised"<br/>"75% to 100% raised"<br/>"> 100% raised" |
+| sort | String | Sort order | One of: <br/>"pupularity", <br/>"newest", <br/>"end_date", <br/>"most_funded", <br/>"most_backed"|
 | maxResults | Number | Maximum number of projects in output | Positive number, 0 for up to 2400 results |
+| datasetName | String | Name of dataset that will be overwritten with data on each run | Alphabet characters, numbers and dash (e.q. my-dataset) |
+
 
 ### Important considerations
 **Location** - If you provide location to the Actor and it's set a string, it will run another actor to find
 ID associated with the location. Once the location is found, it will be outputed in the console. Next time if you provide
 the numeric ID instead of the location, it will not do the lookup again.
 
+This option requires access to Apify Proxy, if you do not have access to it, then the actor will fail.
+You can fix this by going to Kickstarter, looking up anything and selecting the location you want. Then in addressbar of your browser you should see that the address now contains "woe_id" parameter. If you copy it's value into the location field of this actor. It will use it instead and you will not need to use proxy.
+
 **maxResults** - Kickstarter will return a maximum of 200 pages, which is 2400 results. To get more results then this limit run multiple instances of this actor with more specific search terms.
+
+**datasetName** -
 
 ## Run & Console output
 
