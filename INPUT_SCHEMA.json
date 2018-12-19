@@ -246,7 +246,7 @@
             "type": "string",
             "description": "Use this if you want the data to be written into named dataset, setting this will overwrite the data with each run",
             "default": "",
-            "editor": "text"
+            "editor": "textfield"
         }
     },
     "required": []
