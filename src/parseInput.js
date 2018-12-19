@@ -9,6 +9,10 @@ const { statuses, categories, pledges, goals, raised, sorts } = require('./filte
 async function processLocation(location) {
     if (_.isFinite(Number(location))) return location;
     if (!_.isString(location)) crash(`Input parameter location contains invalid value ${location}`);
+
+    const user = await Apify.client.users.getUser();
+    if (user.proxy.groups.length < 1) crash('You do not have access to Apify proxy, sadly this means, that location cannot be found. Refer to readme of this actor to see how to remedy this situation.');
+
     const run = await Apify.call(
         LOCATION_SEARCH_ACTOR_ID,
         { query: location },
