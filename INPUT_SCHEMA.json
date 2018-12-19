@@ -232,7 +232,8 @@
             "type": "string",
             "description": "Allows you to change the ",
             "default": "newest",
-            "enum": ["popularity", "newest", "end_date", "most_funded", "most_backed"],
+            "prefill": "newest",
+            "enum": ["newest", "popularity", "end_date", "most_funded", "most_backed"],
             "editor": "select"
         },
         "maxResults": {
