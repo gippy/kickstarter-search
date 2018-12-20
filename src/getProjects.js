@@ -131,9 +131,10 @@ async function getProjects(input) {
 
     let dataset = null;
     if (datasetName) {
-        dataset = await Apify.openDataset(datasetName);
-        await dataset.delete();
-        dataset = await Apify.openDataset(datasetName);
+        dataset = await Apify.client.datasets.getOrCreateDataset({ datasetName });
+        await Apify.client.datasets.deleteDataset({ datasetId: dataset.id });
+        dataset = await Apify.client.datasets.getOrCreateDataset({ datasetName });
+        dataset = await Apify.openDataset(dataset.id);
     }
 
     do {
