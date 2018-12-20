@@ -13,6 +13,7 @@ async function processLocation(location) {
     const user = await Apify.client.users.getUser();
     if (user.proxy.groups.length < 1) crash('You do not have access to Apify proxy, sadly this means, that location cannot be found. Refer to readme of this actor to see how to remedy this situation.');
 
+    console.log(`Quering kickstarter for location ID of "${location}"`);
     const run = await Apify.call(
         LOCATION_SEARCH_ACTOR_ID,
         { query: location },
@@ -20,6 +21,7 @@ async function processLocation(location) {
     if (run.status !== ACT_JOB_STATUSES.SUCCEEDED) crash(`Actor ${LOCATION_SEARCH_ACTOR_ID} did not finish correctly.`);
     const { locations } = run.output.body;
     if (!locations.length) crash(`Location "${location}" was not found.`);
+    console.log(`Location found, woe_id is - ${locations[0].id}`);
     return locations[0].id;
 }
 
