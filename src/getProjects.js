@@ -151,7 +151,7 @@ async function getProjects(input) {
         const projectsToSave = data.projects.slice(0, maximumResults - savedProjects).map(cleanProject);
         seed = data.seed; // eslint-disable-line
         await Apify.pushData(projectsToSave);
-        if (dataset) dataset.pushData(projectsToSave);
+        if (dataset) await dataset.pushData(projectsToSave);
         console.log(`Page ${page}: Saved ${projectsToSave.length} projects`);
 
         savedProjects += projectsToSave.length;
