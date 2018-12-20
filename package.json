@@ -1,6 +1,6 @@
 {
 	"name": "kickstarter-search",
-	"version": "0.0.2",
+	"version": "0.1.0",
 	"description": "Actor which provides wrapper above Kickstarter search.",
 	"main": "main.js",
 	"dependencies": {

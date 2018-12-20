@@ -11,7 +11,8 @@ async function processLocation(location) {
     if (!_.isString(location)) crash(`Input parameter location contains invalid value ${location}`);
 
     const user = await Apify.client.users.getUser();
-    if (user.proxy.groups.length < 1) crash('You do not have access to Apify proxy, sadly this means, that location cannot be found. Refer to readme of this actor to see how to remedy this situation.');
+
+    if (user.proxy.groups.length < 1) crash('You do not have access to Apify proxy, sadly this means, that location cannot be found. Refer to readme of this actor to see how to remedy this situation.'); // eslint-disable-line
 
     console.log(`Quering kickstarter for location ID of "${location}"`);
     const run = await Apify.call(
@@ -82,7 +83,7 @@ async function parseInput(input) {
     if (filledInFilters.sort) {
         const sort = sorts.indexOf(filledInFilters.sort.toLowerCase());
         if (sort === -1) crash(`Input parameter sort contains invalid value "${filledInFilters.sort}"`);
-        queryParams.sort = sort;
+        queryParams.sort = filledInFilters.sort.toLowerCase();
     } else {
         queryParams.sort = DEFAULT_SORT_ORDER;
     }
