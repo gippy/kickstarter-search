@@ -1,3 +1,7 @@
+const moment = require('moment');
+
+const DATE_FORMAT = 'ddd, DD MMM YYYY HH:mm:ss ZZ';
+
 function cleanProject(project) {
     const cleanedProject = {
         ...project,
@@ -12,6 +16,12 @@ function cleanProject(project) {
         categoryName: project.category ? project.category.name : null,
         categorySlug: project.category ? project.category.slug : null,
         url: (project.urls && project.urls.web && project.urls.web.project) || null,
+        title: project.name,
+        description: project.blurb,
+        link: (project.urls && project.urls.web && project.urls.web.project) || null,
+        pubDate: moment.unix(project.launched_at).format(DATE_FORMAT),
+        created_at_formatted: moment.unix(project.created_at).format(DATE_FORMAT),
+        launched_at_formatted: moment.unix(project.launched_at).format(DATE_FORMAT),
     };
 
     delete cleanedProject.creator;
