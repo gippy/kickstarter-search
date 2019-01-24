@@ -160,7 +160,7 @@ async function getProjects(input) {
         if (hasMoreResults) {
             const finished = 1 - (savedProjects / totalProjects);
             const remainingProjectsPercentage = Math.round(finished * 10000) / 100;
-            console.log(`Page ${page}: Remaining projects ${totalProjects - savedProjects} (${remainingProjectsPercentage}%)`);
+            console.log(`Page ${page}: Remaining projects ${totalProjects - savedProjects} (${100 - remainingProjectsPercentage}% finished)`);
 
             // Every 10 pages output estimated time of finish
             if (page % 10 === 0) notifyAboutEstimatedTime(page, startedAt, savedProjects, totalProjects);
