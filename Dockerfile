@@ -4,6 +4,7 @@ FROM apify/actor-node-basic
 COPY . ./
 COPY src ./src
 
+
 # Install default dependencies, print versions of everything
 RUN npm --quiet set progress=false \
  && npm install --only=prod --no-optional \
