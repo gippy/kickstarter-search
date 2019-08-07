@@ -137,8 +137,22 @@ async function getProjects(input) {
         dataset = await Apify.openDataset(dataset.id);
     }
 
+    let rateLimitRetries = 0;
     do {
-        const data = await getDataForPage(page, queryParameters, seed, preparedRequest);
+        let data;
+        try {
+            data = await getDataForPage(page, queryParameters, seed, preparedRequest);
+        } catch (error) {
+            if (error.statusCode === 429 && rateLimitRetries < 20) {
+                console.log(' - Encountered rate limit, waiting 10 seconds');
+                await Apify.utils.sleep(10000);
+                rateLimitRetries++;
+                continue; // eslint-disable-line
+            } else {
+                // Rethrow non rate-limit errors or if we are stuck
+                throw error;
+            }
+        }
 
         if (page === 1) {
             console.log(`Page ${page}: Found ${data.total_hits} projects`);
