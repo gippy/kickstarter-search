@@ -142,6 +142,7 @@ async function getProjects(input) {
         let data;
         try {
             data = await getDataForPage(page, queryParameters, seed, preparedRequest);
+            rateLimitRetries = 0;
         } catch (error) {
             if (error.statusCode === 429 && rateLimitRetries < 20) {
                 console.log(' - Encountered rate limit, waiting 10 seconds');
