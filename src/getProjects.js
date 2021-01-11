@@ -1,5 +1,4 @@
 const Apify = require('apify');
-const request = require('request-promise-native');
 const cheerio = require('cheerio');
 const _ = require('lodash');
 const querystring = require('querystring');
@@ -9,34 +8,42 @@ const cleanProject = require('./cleanProject');
 const { crash } = require('./utils');
 const { BASE_URL, PROJECTS_PER_PAGE, MAX_PAGES } = require('./consts');
 
-const commonHeaders = {
-    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
-};
+const { requestAsBrowser } = Apify.utils;
 
 /**
  * Prepares a request with initialized cookies and stored csrf token (seed).
  * @param {*} queryParameters Query used in all subsequent requests
+ * @param {any} proxyConfig Proxy configuration
  * @return {Object} Returns object containing prepared instance of Request, query parameters and loaded seed.
  */
-async function getPreparedRequest(queryParameters) {
+async function getPreparedRequest(queryParameters, proxyConfig) {
     const params = querystring.stringify(queryParameters);
     const url = `${BASE_URL}${params}`;
 
-    // Prepare cookie jar so that the second request contains cookies from the first one
-    const cookieJar = request.jar();
-    const preparedRequest = request.defaults({ jar: cookieJar /* proxy */ });
+    const proxyConfiguration = await Apify.createProxyConfiguration(proxyConfig);
+    const proxyUrl = proxyConfiguration ? proxyConfiguration.newUrl(`${Math.random()}`) : undefined;
 
     // Query the url and load csrf token from it
-    const html = await preparedRequest({
+    const html = await requestAsBrowser({
         url,
-        headers: { ...commonHeaders },
+        proxyUrl,
     });
 
-    const $ = cheerio.load(html);
+    const $ = cheerio.load(html.body);
     const seed = $('.js-project-group[data-seed]').attr('data-seed');
+    const cookies = (html.headers['set-cookie'] || []).map((s) => s.split(';', 2)[0]).join('; ');
 
     return {
-        preparedRequest,
+        async preparedRequest(args) {
+            return requestAsBrowser({
+                ...args,
+                headers: {
+                    ...args.headers,
+                    Cookie: cookies,
+                },
+                proxyUrl,
+            });
+        },
         seededQueryParameters: {
             ...queryParameters,
             seed,
@@ -52,7 +59,7 @@ async function getPreparedRequest(queryParameters) {
  * @param {Request} preparedRequest Instance of Request class with prepared cookies
  * @return {Object} Loaded page data from the website
  */
-function getDataForPage(page, query, seed, preparedRequest) {
+async function getDataForPage(page, query, seed, preparedRequest) {
     console.log(`Page ${page}: Loading projects`);
     const params = querystring.stringify({
         ...query,
@@ -60,11 +67,14 @@ function getDataForPage(page, query, seed, preparedRequest) {
         seed,
     });
     const url = `${BASE_URL}${params}`;
-    return preparedRequest({
+    return (await preparedRequest({
         url,
-        headers: { ...commonHeaders },
+        headers: {
+            Accept: 'application/json, text/javascript, */*; q=0.01',
+            'X-Requested-With': 'XMLHttpRequest',
+        },
         json: true,
-    });
+    })).body;
 }
 
 /**
@@ -119,7 +129,10 @@ async function getProjects(input) {
     console.log('Loading projects for query:');
     console.log(queryParameters);
 
-    const { preparedRequest, seededQueryParameters } = await getPreparedRequest(queryParameters);
+    const { preparedRequest, seededQueryParameters } = await getPreparedRequest(
+        queryParameters,
+        input.proxyConfig,
+    );
 
     let hasMoreResults = false;
     let page = 1;
