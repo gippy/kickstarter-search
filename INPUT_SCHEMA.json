@@ -248,7 +248,18 @@
             "description": "Use this if you want the data to be written into named dataset, setting this will overwrite the data with each run",
             "default": "",
             "editor": "textfield"
+        },
+        "proxyConfig": {
+            "title": "Proxy configuration",
+            "type": "object",
+            "description": "Proxy group to use",
+            "default": {
+                "useApifyProxy": true
+            },
+            "editor": "proxy"
         }
     },
-    "required": []
+    "required": [
+        "proxyConfig"
+    ]
 }
