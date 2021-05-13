@@ -4,9 +4,9 @@
 	"description": "Actor which provides wrapper above Kickstarter search.",
 	"main": "main.js",
 	"dependencies": {
-		"apify": "^0.21.11",
-		"cheerio": "^1.0.0-rc.3",
-		"lodash": "^4.17.20",
+		"apify": "^1.2.0",
+		"cheerio": "^1.0.0-rc.9",
+		"lodash": "^4.17.21",
 		"moment": "^2.29.1"
 	},
 	"devDependencies": {
