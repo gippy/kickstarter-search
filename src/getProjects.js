@@ -175,14 +175,21 @@ async function getProjects(input) {
             if (data.total_hits > maximumResults) notifyAboutMaxResults(data.total_hits, maximumResults);
             totalProjects = Math.min(data.total_hits, maximumResults);
         }
+        let projectsToSave
+        try {
+            projectsToSave = data.projects.slice(0, maximumResults - savedProjects).map(cleanProject);
+        } catch (e) {
 
-        const projectsToSave = data.projects.slice(0, maximumResults - savedProjects).map(cleanProject);
+        }
         seed = data.seed; // eslint-disable-line
-        await Apify.pushData(projectsToSave);
-        if (dataset) await dataset.pushData(projectsToSave);
-        console.log(`Page ${page}: Saved ${projectsToSave.length} projects`);
+        if (projectsToSave) {
+            await Apify.pushData(projectsToSave);
+            if (dataset) await dataset.pushData(projectsToSave);
+            console.log(`Page ${page}: Saved ${projectsToSave.length} projects`);
 
-        savedProjects += projectsToSave.length;
+            savedProjects += projectsToSave.length;
+        }
+
         hasMoreResults = data.has_more;
 
         if (hasMoreResults) {
