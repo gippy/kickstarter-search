@@ -10,7 +10,8 @@ async function processLocation(location) {
     if (_.isFinite(Number(location))) return location;
     if (!_.isString(location)) crash(`Input parameter location contains invalid value ${location}`);
 
-    const user = await Apify.client.users.getUser();
+    const apifyClient = Apify.newClient();
+    const user = await apifyClient.user().get();
 
     if (user.proxy.groups.length < 1) crash('You do not have access to Apify proxy, sadly this means, that location cannot be found. Refer to readme of this actor to see how to remedy this situation.'); // eslint-disable-line
 
