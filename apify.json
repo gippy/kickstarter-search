@@ -1,7 +1,7 @@
 {
-	"name": "kickstarter-search",
-	"template": "basic",
-	"version": "0.1",
+	"name": "kickstarter-rewriten",
+	"version": "0.0",
 	"buildTag": "latest",
-	"env": null
+	"env": null,
+	"template": "project_empty"
 }
