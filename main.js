@@ -1,19 +1,21 @@
 const Apify = require('apify');
 const querystring = require('querystring');
 
-const { parseInput } = require('./src/utils');
+const { parseInput, proxyConfiguration } = require('./src/utils');
 const { BASE_URL, PROJECTS_PER_PAGE } = require('./src/consts');
 const { handleStart, handlePagination } = require('./src/routes');
 
 const { log } = Apify.utils;
 
 Apify.main(async () => {
-    const proxyConfiguration = await Apify.createProxyConfiguration();
     const requestQueue = await Apify.openRequestQueue();
     const input = await Apify.getInput();
     // GETTING PARAMS FROM THE INPUT
     const queryParameters = await parseInput(input);
     let { maxResults } = input;
+    const { proxyConfig } = input;
+
+    const proxy = await proxyConfiguration({ proxyConfig });
     if (!maxResults) maxResults = 200 * PROJECTS_PER_PAGE;
     const params = querystring.stringify(queryParameters);
     const firstUrl = `${BASE_URL}${params}`;
@@ -41,9 +43,9 @@ Apify.main(async () => {
             // eslint-disable-next-line default-case
             switch (label) {
                 case 'START':
-                    return handleStart(context, queryParameters, requestQueue, proxyConfiguration, maxResults);
+                    return handleStart(context, queryParameters, requestQueue, proxy, maxResults);
                 case 'PAGINATION-LIST':
-                    return handlePagination(context, requestQueue, proxyConfiguration);
+                    return handlePagination(context, requestQueue, proxy);
             }
         },
         handleFailedRequestFunction: async ({

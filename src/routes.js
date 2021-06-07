@@ -62,8 +62,14 @@ exports.handlePagination = async ({ request, session }, requestQueue, proxyConfi
     }
     // ARRAY OF THE PROJECTS FROM THE PAGE
     log.info(`Number of  saved projects: ${savedProjects}`);
-    const projectsToSave = body.projects.slice(0, maximumResults - savedProjects)
-        .map(cleanProject);
+    let projectsToSave
+    try {
+        projectsToSave = body.projects.slice(0, maximumResults - savedProjects)
+        .map(cleanProject);    
+    } catch (e) {
+        new Error('The page didn\'t load as expected, Will retry...')
+    }
+    
     // GETTING NEW SEED (TOKEN) FROM JSON
     const { seed } = body;
     // SAVING NEEDED NUMBER OF ITEMS
