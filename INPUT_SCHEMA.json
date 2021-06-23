@@ -7,7 +7,8 @@
             "title": "Query",
             "type": "string",
             "description": "What to search Kickstarter for",
-            "editor": "textfield"
+            "editor": "textfield",
+            "prefill": "gadgets"
         },
         "category": {
             "title": "Category",
@@ -254,6 +255,9 @@
             "type": "object",
             "description": "Proxy group to use",
             "default": {
+                "useApifyProxy": true
+            },
+            "prefill": {
                 "useApifyProxy": true
             },
             "editor": "proxy"
