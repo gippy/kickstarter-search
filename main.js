@@ -36,7 +36,7 @@ Apify.main(async () => {
         requestQueue,
         maxConcurrency: 1,
         useSessionPool: true,
-        maxRequestRetries: 5,
+        maxRequestRetries: 10,
         handleRequestFunction: async (context) => {
             const { url, userData: { label } } = context.request;
             log.info('Page opened.', { label, url });

@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"description": "Kickstarter scraper",
 	"dependencies": {
-		"apify": "^1.2.0",
+		"apify": "^2.0.6",
 		"cheerio": "^1.0.0-rc.9",
 		"moment": "^2.29.1"
 	},
