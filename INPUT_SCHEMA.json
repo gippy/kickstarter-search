@@ -200,7 +200,7 @@
       "location": {
           "title": "Location",
           "type": "string",
-          "description": "Location to search around, can be either string or Numeric ID of the location",
+          "description": "Location where you want to search",
           "prefill": "United States",
           "editor": "textfield"
       },
