@@ -21,7 +21,7 @@ Input of this actor should be JSON containing filter specification. Allowed filt
 | ----- | ---- | ----------- | -------------- |
 | query | String | Search term | Any string value |
 | category | String | Category to search in | Category slug from <a href="https://github.com/gippy/kickstarter-search/blob/master/categories.json" target="_blank">this list</a> |
-| location | String / Number | Location to search around | Either a name of the location or ID of the location |
+| location | String / Number | Location to search around | A name of the location |
 | status | String | State of the project | One of: "All", "Live", "Successful" |
 | pledged | String | Amount pledged | One of:<br/>"All"<br/>"< $1,000 pledged"<br/>"$1,000 to $10,000 pledged"<br/>"$10,000 to $100,000 pledged"<br/>"$100,000 to $1,000,000 pledged"<br/>"> $1,000,000 pledged" |
 | goal | String | Goal amount | One of:<br/>"All"<br/>>"< $1,000 goal"<br/>"$1,000 to $10,000 goal"<br/>"$10,000 to $100,000 goal"<br/> "$100,000 to $1,000,000 goal"<br/>"> $1,000,000 goal" |
@@ -33,11 +33,7 @@ Input of this actor should be JSON containing filter specification. Allowed filt
 
 ### Important considerations
 **Location** - If you provide location to the Kickstarter search actor and it's set a string, it will run <a href="https://www.apify.com/jaroslavhejlek/kickstarter-location-to-ids" target="_blank">another actor</a> to find
-ID associated with the location. Once the location is found, it will be outputed in the console. Next time if you provide
-the numeric ID instead of the location, it will not do the lookup again.
-
-This option requires access to <a href="https://www.apify.com/docs/proxy">Apify Proxy</a>, if you do not have access to it, then the actor will fail.
-You can avoid this by going to Kickstarter, looking up anything and selecting the location you want. Then in addressbar of your browser you should see that the address now contains "woe_id" parameter. If you copy it's value into the location field of this actor. It will use it instead and you will not need to use proxy.
+ID associated with the location. 
 
 **maxResults** - Kickstarter will return a maximum of 200 pages, which is 2400 results. To get more results then this limit run multiple instances of this actor with more specific search terms.
 
