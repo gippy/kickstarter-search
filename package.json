@@ -5,7 +5,7 @@
 	"dependencies": {
 		"apify": "^2.0.6",
 		"cheerio": "^1.0.0-rc.9",
-		"moment": "^2.29.1"
+		"moment": "^2.29.4"
 	},
 	"devDependencies": {
 		"@apify/eslint-config": "^0.1.3",
